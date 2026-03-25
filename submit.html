@@ -57,13 +57,13 @@
           <section class="lock-card">
             <div>
               <p class="eyebrow">Student identity</p>
-              <h3 id="lock-heading">Lock this device to a student name</h3>
+              <h3 id="lock-heading">Lock this device to a student or group name</h3>
             </div>
             <div class="lock-row">
-              <input id="lock-name-input" maxlength="40" placeholder="Enter your name once" />
+              <input id="lock-name-input" maxlength="40" placeholder="Enter your student or group name once" />
               <button class="ghost-button" id="lock-name-button" type="button">Lock name</button>
             </div>
-            <p class="form-note" id="lock-feedback">Each browser can be locked to one student name before posting.</p>
+            <p class="form-note" id="lock-feedback">Each browser can be locked to one student or group name before posting.</p>
           </section>
         </section>
 
@@ -77,22 +77,33 @@
 
           <form id="post-form" class="post-form">
             <label>
-              Locked student name
+              Locked student &amp; group name
               <input
                 id="author-input"
                 name="author"
                 maxlength="40"
-                placeholder="Lock your name above first"
+                placeholder="Lock your student or group name above first"
                 readonly
                 required
               />
             </label>
 
             <label>
-              Your post
+              Heading
+              <input
+                id="heading-input"
+                name="heading"
+                maxlength="60"
+                placeholder="Short title for your message"
+                required
+              />
+            </label>
+
+            <label>
+              Body
               <textarea
-                id="message-input"
-                name="message"
+                id="body-input"
+                name="body"
                 maxlength="280"
                 rows="6"
                 placeholder="Share a question, idea, reflection, takeaway, or challenge..."

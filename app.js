@@ -13,7 +13,8 @@ const state = {
 const els = {
   form: document.querySelector("#post-form"),
   authorInput: document.querySelector("#author-input"),
-  messageInput: document.querySelector("#message-input"),
+  headingInput: document.querySelector("#heading-input"),
+  bodyInput: document.querySelector("#body-input"),
   themeInput: document.querySelector("#theme-input"),
   submitButton: document.querySelector("#submit-button"),
   formFeedback: document.querySelector("#form-feedback"),
@@ -29,6 +30,7 @@ const els = {
   bubbleTemplate: document.querySelector("#bubble-template"),
   dialog: document.querySelector("#message-dialog"),
   dialogAuthor: document.querySelector("#dialog-author"),
+  dialogHeading: document.querySelector("#dialog-heading"),
   dialogMessage: document.querySelector("#dialog-message"),
   dialogMeta: document.querySelector("#dialog-meta"),
   dialogDelete: document.querySelector("#dialog-delete"),
@@ -53,7 +55,7 @@ function bindEvents() {
 function handleLockName() {
   const candidate = sanitiseText(els.lockNameInput?.value || "", 40);
   if (!candidate) {
-    setLockFeedback("Enter the student name before locking it.", true);
+    setLockFeedback("Enter the student or group name before locking it.", true);
     return;
   }
 
@@ -61,25 +63,31 @@ function handleLockName() {
   localStorage.setItem(STUDENT_NAME_KEY, candidate);
   renderLockedName();
   setLockFeedback(`This device is now locked to ${candidate}.`, false);
-  setFeedback("Student name locked. Posts will use this name.", false);
+  setFeedback("Student or group name locked. Posts will use this name.", false);
 }
 
 async function handleSubmit(event) {
   event.preventDefault();
 
   if (!state.lockedName) {
-    setFeedback("Lock this device to a student name before posting.", true);
+    setFeedback("Lock this device to a student or group name before posting.", true);
     return;
   }
 
   const payload = {
     author: state.lockedName,
-    message: (els.messageInput?.value || "").trim(),
+    heading: (els.headingInput?.value || "").trim(),
+    body: (els.bodyInput?.value || "").trim(),
     theme: els.themeInput?.value || "sunrise",
   };
 
-  if (!payload.message) {
-    setFeedback("Write a message before posting.", true);
+  if (!payload.heading) {
+    setFeedback("Add a heading before posting.", true);
+    return;
+  }
+
+  if (!payload.body) {
+    setFeedback("Add a body message before posting.", true);
     return;
   }
 
@@ -99,9 +107,14 @@ async function handleSubmit(event) {
       throw new Error(body.error || "Unable to post right now.");
     }
 
-    if (els.messageInput) {
-      els.messageInput.value = "";
+    if (els.headingInput) {
+      els.headingInput.value = "";
     }
+
+    if (els.bodyInput) {
+      els.bodyInput.value = "";
+    }
+
     setFeedback("Posted to the live wall.");
   } catch (error) {
     setFeedback(error.message || "Something went wrong while posting.", true);
@@ -211,8 +224,8 @@ function renderLockedName() {
 
   if (els.lockHeading) {
     els.lockHeading.textContent = hasLockedName
-      ? "This device is locked to one student"
-      : "Lock this device to a student name";
+      ? "This device is locked to one student or group"
+      : "Lock this device to a student or group name";
   }
 }
 
@@ -241,7 +254,8 @@ function renderBubbleCard(post) {
   if (bubble) {
     bubble.dataset.theme = post.theme;
     bubble.querySelector(".bubble-author").textContent = post.author;
-    bubble.querySelector(".bubble-message").textContent = post.message;
+    bubble.querySelector(".bubble-heading").textContent = post.heading;
+    bubble.querySelector(".bubble-message").textContent = post.body;
     bubble.querySelector(".bubble-time").textContent = formatTime(post.createdAt);
     bubble.addEventListener("click", () => openDialog(post));
   }
@@ -258,13 +272,14 @@ function renderBubbleCard(post) {
 }
 
 function openDialog(post) {
-  if (!els.dialog || !els.dialogAuthor || !els.dialogMessage || !els.dialogMeta) {
+  if (!els.dialog || !els.dialogAuthor || !els.dialogHeading || !els.dialogMessage || !els.dialogMeta) {
     return;
   }
 
   state.selectedPostId = post.id;
   els.dialogAuthor.textContent = post.author;
-  els.dialogMessage.textContent = post.message;
+  els.dialogHeading.textContent = post.heading;
+  els.dialogMessage.textContent = post.body;
   els.dialogMeta.textContent = `Posted ${formatDateTime(post.createdAt)} · Theme: ${capitalise(post.theme)}`;
 
   if (els.dialogDelete) {

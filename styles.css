@@ -521,15 +521,27 @@ body[data-page="dashboard"] .bubble-delete {
   color: rgba(255, 255, 255, 0.92);
 }
 
+.bubble-heading {
+  display: block;
+  font-family: "Fraunces", serif;
+  font-size: 1.35rem;
+  line-height: 1.12;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  text-shadow: 0 1px 1px rgba(29, 25, 88, 0.12);
+}
+
 .bubble-message {
   display: -webkit-box;
   overflow: hidden;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 5;
-  font-size: 1.08rem;
-  line-height: 1.45;
-  font-weight: 800;
-  text-shadow: 0 1px 1px rgba(29, 25, 88, 0.12);
+  -webkit-line-clamp: 4;
+  font-size: 0.98rem;
+  line-height: 1.5;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.94);
+  text-shadow: 0 1px 1px rgba(29, 25, 88, 0.1);
 }
 
 .wall-page .bubble {
@@ -538,8 +550,12 @@ body[data-page="dashboard"] .bubble-delete {
 }
 
 .wall-page .bubble-message {
-  -webkit-line-clamp: 6;
-  font-size: 1.28rem;
+  -webkit-line-clamp: 5;
+  font-size: 1.08rem;
+}
+
+.wall-page .bubble-heading {
+  font-size: 1.7rem;
 }
 
 .empty-state {
@@ -574,11 +590,18 @@ body[data-page="dashboard"] .bubble-delete {
     linear-gradient(135deg, rgba(255, 230, 84, 0.14), rgba(38, 168, 255, 0.14), rgba(255, 78, 169, 0.12));
 }
 
+.dialog-heading {
+  margin: 10px 0 12px;
+  font-size: clamp(2rem, 4.2vw, 3.2rem);
+  line-height: 1.04;
+}
+
 .dialog-message {
-  margin: 10px 0 18px;
-  font-family: "Fraunces", serif;
-  font-size: clamp(1.8rem, 4vw, 3rem);
-  line-height: 1.15;
+  margin: 0 0 18px;
+  color: #2e396f;
+  font-size: clamp(1.05rem, 2vw, 1.28rem);
+  line-height: 1.7;
+  font-weight: 600;
 }
 
 .dialog-meta {

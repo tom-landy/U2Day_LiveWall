@@ -41,6 +41,7 @@
           <button class="dialog-close" id="close-dialog" type="submit" aria-label="Close expanded post">Close</button>
         </div>
         <p class="dialog-label" id="dialog-author"></p>
+        <h2 class="dialog-heading" id="dialog-heading"></h2>
         <p class="dialog-message" id="dialog-message"></p>
         <p class="dialog-meta" id="dialog-meta"></p>
       </form>
@@ -49,9 +50,12 @@
     <template id="bubble-template">
       <article class="bubble-card">
         <button class="bubble" type="button">
-          <span class="bubble-author"></span>
-          <span class="bubble-message"></span>
-          <span class="bubble-time"></span>
+          <div class="bubble-content">
+            <span class="bubble-author"></span>
+            <span class="bubble-heading"></span>
+            <span class="bubble-message"></span>
+            <span class="bubble-time"></span>
+          </div>
         </button>
       </article>
     </template>

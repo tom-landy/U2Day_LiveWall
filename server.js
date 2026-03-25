@@ -7,7 +7,8 @@ const PORT = Number(process.env.PORT || 3000);
 const HOST = process.env.RENDER ? "0.0.0.0" : process.env.HOST || "127.0.0.1";
 const ROOT = process.cwd();
 const MAX_POSTS = 60;
-const MAX_MESSAGE_LENGTH = 280;
+const MAX_HEADING_LENGTH = 60;
+const MAX_BODY_LENGTH = 280;
 const MAX_AUTHOR_LENGTH = 40;
 const THEMES = new Set(["sunrise", "lagoon", "meadow", "berry", "gold"]);
 
@@ -39,18 +40,25 @@ createServer(async (req, res) => {
     }
 
     const author = sanitiseText(body.author, MAX_AUTHOR_LENGTH) || "Anonymous";
-    const message = sanitiseText(body.message, MAX_MESSAGE_LENGTH);
+    const heading = sanitiseText(body.heading, MAX_HEADING_LENGTH);
+    const bodyText = sanitiseText(body.body, MAX_BODY_LENGTH);
     const theme = THEMES.has(body.theme) ? body.theme : "sunrise";
 
-    if (!message) {
-      sendJson(res, 400, { error: "Please enter a message before posting." });
+    if (!heading) {
+      sendJson(res, 400, { error: "Please enter a heading before posting." });
+      return;
+    }
+
+    if (!bodyText) {
+      sendJson(res, 400, { error: "Please enter a body message before posting." });
       return;
     }
 
     const post = {
       id: crypto.randomUUID(),
       author,
-      message,
+      heading,
+      body: bodyText,
       theme,
       createdAt: new Date().toISOString(),
     };
