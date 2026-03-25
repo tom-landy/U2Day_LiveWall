@@ -415,6 +415,10 @@ select:focus {
   gap: 10px;
 }
 
+.bubble-card .bubble-delete {
+  margin-top: -2px;
+}
+
 .bubble {
   min-height: 170px;
   display: grid;

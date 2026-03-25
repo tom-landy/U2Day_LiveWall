@@ -7,7 +7,6 @@ const state = {
   posts: [],
   stream: null,
   selectedPostId: null,
-  moderationEnabled: false,
   lockedName: loadLockedName(),
 };
 
@@ -25,8 +24,6 @@ const els = {
   connectionStatus: document.querySelector("#connection-status"),
   postCount: document.querySelector("#post-count"),
   refreshButton: document.querySelector("#refresh-button"),
-  moderationButton: document.querySelector("#moderation-button"),
-  moderationStateLabel: document.querySelector("#moderation-state-label"),
   bubbleGrid: document.querySelector("#bubble-grid"),
   emptyState: document.querySelector("#empty-state"),
   bubbleTemplate: document.querySelector("#bubble-template"),
@@ -42,7 +39,6 @@ initialise();
 async function initialise() {
   bindEvents();
   renderLockedName();
-  renderModerationState();
   await loadPosts();
   connectStream();
 }
@@ -51,7 +47,6 @@ function bindEvents() {
   els.form?.addEventListener("submit", handleSubmit);
   els.refreshButton?.addEventListener("click", loadPosts);
   els.lockNameButton?.addEventListener("click", handleLockName);
-  els.moderationButton?.addEventListener("click", toggleModeration);
   els.dialogDelete?.addEventListener("click", handleDialogDelete);
 }
 
@@ -221,20 +216,6 @@ function renderLockedName() {
   }
 }
 
-function renderModerationState() {
-  if (els.moderationButton) {
-    els.moderationButton.textContent = state.moderationEnabled ? "Moderation on" : "Moderation off";
-  }
-
-  if (els.moderationStateLabel) {
-    els.moderationStateLabel.textContent = state.moderationEnabled ? "On" : "Off";
-  }
-
-  if (els.dialogDelete) {
-    els.dialogDelete.classList.toggle("is-hidden", !state.moderationEnabled || page !== "dashboard");
-  }
-}
-
 function renderPosts() {
   if (els.postCount) {
     els.postCount.textContent = String(state.posts.length);
@@ -266,7 +247,7 @@ function renderBubbleCard(post) {
   }
 
   if (deleteButton) {
-    deleteButton.classList.toggle("is-hidden", !state.moderationEnabled || page !== "dashboard");
+    deleteButton.classList.toggle("is-hidden", page !== "dashboard");
     deleteButton.addEventListener("click", (event) => {
       event.stopPropagation();
       deletePost(post.id);
@@ -288,16 +269,10 @@ function openDialog(post) {
 
   if (els.dialogDelete) {
     els.dialogDelete.dataset.postId = post.id;
-    els.dialogDelete.classList.toggle("is-hidden", !state.moderationEnabled || page !== "dashboard");
+    els.dialogDelete.classList.toggle("is-hidden", page !== "dashboard");
   }
 
   els.dialog.showModal();
-}
-
-function toggleModeration() {
-  state.moderationEnabled = !state.moderationEnabled;
-  renderModerationState();
-  renderPosts();
 }
 
 async function handleDialogDelete() {

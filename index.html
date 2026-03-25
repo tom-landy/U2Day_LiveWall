@@ -43,8 +43,8 @@
             <strong id="post-count">0</strong>
           </div>
           <div class="meta-card">
-            <span class="meta-label">Moderation</span>
-            <strong id="moderation-state-label">Off</strong>
+            <span class="meta-label">Quick remove</span>
+            <strong>Delete is on every message</strong>
           </div>
         </div>
       </header>
@@ -72,7 +72,6 @@
           </div>
 
           <div class="wall-actions">
-            <button class="ghost-button" id="moderation-button" type="button">Moderation off</button>
             <button class="ghost-button" id="refresh-button" type="button">Refresh</button>
           </div>
         </section>
@@ -99,7 +98,7 @@
     <dialog class="message-dialog" id="message-dialog">
       <form method="dialog" class="dialog-card">
         <div class="dialog-actions">
-          <button class="danger-button is-hidden" id="dialog-delete" type="button">Delete post</button>
+          <button class="danger-button" id="dialog-delete" type="button">Delete post</button>
           <button class="dialog-close" id="close-dialog" type="submit" aria-label="Close expanded post">Close</button>
         </div>
         <p class="dialog-label" id="dialog-author"></p>
@@ -115,7 +114,7 @@
           <span class="bubble-message"></span>
           <span class="bubble-time"></span>
         </button>
-        <button class="bubble-delete danger-button is-hidden" type="button">Delete</button>
+        <button class="bubble-delete danger-button" type="button">Delete</button>
       </article>
     </template>
 
