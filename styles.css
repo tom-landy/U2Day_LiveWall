@@ -431,8 +431,10 @@ select:focus {
   gap: 10px;
 }
 
-.bubble-card .bubble-delete {
-  margin-top: -2px;
+.bubble-content {
+  display: grid;
+  gap: 14px;
+  width: 100%;
 }
 
 .bubble {
@@ -464,9 +466,30 @@ select:focus {
 }
 
 .bubble-delete {
-  justify-self: end;
+  align-self: center;
   padding: 10px 14px;
   font-size: 0.9rem;
+}
+
+body[data-page="dashboard"] .bubble-card {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: stretch;
+}
+
+body[data-page="dashboard"] .bubble {
+  min-height: 190px;
+  height: 100%;
+}
+
+body[data-page="dashboard"] .bubble-delete {
+  align-self: stretch;
+  height: 100%;
+  min-width: 96px;
+  border-radius: 28px;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .bubble[data-theme="sunrise"] {
