@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>U2 Day Live Wall</title>
+    <meta
+      name="description"
+      content="A real-time live wall where students can post thoughts and see them appear instantly on screen."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Manrope:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">U2 Day</p>
+          <h1>Live Wall</h1>
+          <p class="hero-text">
+            Students post reflections, questions, or ideas and they appear on the wall in real time. Tap any bubble
+            to expand it for the room.
+          </p>
+          <div class="hero-badges">
+            <span class="badge">Real-time updates</span>
+            <span class="badge">Interactive bubble wall</span>
+            <span class="badge">Render-ready Node app</span>
+          </div>
+        </div>
+
+        <div class="hero-meta">
+          <div class="meta-card">
+            <span class="meta-label">Connected</span>
+            <strong id="connection-status">Connecting...</strong>
+          </div>
+          <div class="meta-card">
+            <span class="meta-label">Posts Today</span>
+            <strong id="post-count">0</strong>
+          </div>
+          <div class="meta-card">
+            <span class="meta-label">Screen View</span>
+            <strong>Open this page on the projector</strong>
+          </div>
+        </div>
+      </header>
+
+      <main class="layout">
+        <section class="panel submit-panel">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Post to the wall</p>
+              <h2>Student submission</h2>
+            </div>
+          </div>
+
+          <form id="post-form" class="post-form">
+            <label>
+              Name or group
+              <input id="author-input" name="author" maxlength="40" placeholder="Example: Mia or Group 4" />
+            </label>
+
+            <label>
+              Your post
+              <textarea
+                id="message-input"
+                name="message"
+                maxlength="280"
+                rows="5"
+                placeholder="Share a question, idea, reflection, takeaway, or challenge..."
+                required
+              ></textarea>
+            </label>
+
+            <label>
+              Bubble colour
+              <select id="theme-input" name="theme">
+                <option value="sunrise">Sunrise</option>
+                <option value="lagoon">Lagoon</option>
+                <option value="meadow">Meadow</option>
+                <option value="berry">Berry</option>
+                <option value="gold">Gold</option>
+              </select>
+            </label>
+
+            <button class="primary-button" id="submit-button" type="submit">Post to live wall</button>
+            <p class="form-note" id="form-feedback">Posts appear instantly for everyone watching.</p>
+          </form>
+        </section>
+
+        <section class="panel wall-panel">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">On screen now</p>
+              <h2>Interactive bubble wall</h2>
+            </div>
+            <button class="ghost-button" id="refresh-button" type="button">Refresh</button>
+          </div>
+
+          <div class="wall-stage">
+            <div class="bubble-grid" id="bubble-grid" aria-live="polite"></div>
+
+            <div class="empty-state" id="empty-state">
+              <h3>The wall is ready</h3>
+              <p>The first student post will appear here as a bubble.</p>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <dialog class="message-dialog" id="message-dialog">
+      <form method="dialog" class="dialog-card">
+        <button class="dialog-close" id="close-dialog" type="submit" aria-label="Close expanded post">Close</button>
+        <p class="dialog-label" id="dialog-author"></p>
+        <p class="dialog-message" id="dialog-message"></p>
+        <p class="dialog-meta" id="dialog-meta"></p>
+      </form>
+    </dialog>
+
+    <template id="bubble-template">
+      <button class="bubble" type="button">
+        <span class="bubble-author"></span>
+        <span class="bubble-message"></span>
+        <span class="bubble-time"></span>
+      </button>
+    </template>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: u2day-livewall
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start

@@ -1,0 +1,7 @@
+{
+  "google_client_id": "YOUR_GOOGLE_CLIENT_ID",
+  "google_client_secret": "YOUR_GOOGLE_CLIENT_SECRET",
+  "gmail_label": "Yoga Admissions",
+  "gmail_query": "",
+  "gmail_max_results": 15
+}
