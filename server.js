@@ -62,6 +62,21 @@ createServer(async (req, res) => {
     return;
   }
 
+  if (req.method === "DELETE" && url.pathname.startsWith("/api/posts/")) {
+    const postId = decodeURIComponent(url.pathname.slice("/api/posts/".length));
+    const index = posts.findIndex((post) => post.id === postId);
+
+    if (index === -1) {
+      sendJson(res, 404, { error: "Post not found." });
+      return;
+    }
+
+    posts.splice(index, 1);
+    broadcast("delete", { id: postId });
+    sendJson(res, 200, { ok: true, id: postId });
+    return;
+  }
+
   if (req.method === "GET" && url.pathname === "/api/stream") {
     openEventStream(req, res);
     return;

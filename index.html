@@ -58,10 +58,29 @@
             </div>
           </div>
 
+          <section class="lock-card">
+            <div>
+              <p class="eyebrow">Student identity</p>
+              <h3 id="lock-heading">Lock this device to a student name</h3>
+            </div>
+            <div class="lock-row">
+              <input id="lock-name-input" maxlength="40" placeholder="Enter the student name once" />
+              <button class="ghost-button" id="lock-name-button" type="button">Lock name</button>
+            </div>
+            <p class="form-note" id="lock-feedback">Each browser can be locked to one student name before posting.</p>
+          </section>
+
           <form id="post-form" class="post-form">
             <label>
-              Name or group
-              <input id="author-input" name="author" maxlength="40" placeholder="Example: Mia or Group 4" />
+              Locked student name
+              <input
+                id="author-input"
+                name="author"
+                maxlength="40"
+                placeholder="Lock a student name above first"
+                readonly
+                required
+              />
             </label>
 
             <label>
@@ -98,7 +117,10 @@
               <p class="eyebrow">On screen now</p>
               <h2>Interactive bubble wall</h2>
             </div>
-            <button class="ghost-button" id="refresh-button" type="button">Refresh</button>
+            <div class="wall-actions">
+              <button class="ghost-button" id="moderation-button" type="button">Moderation off</button>
+              <button class="ghost-button" id="refresh-button" type="button">Refresh</button>
+            </div>
           </div>
 
           <div class="wall-stage">
@@ -115,7 +137,10 @@
 
     <dialog class="message-dialog" id="message-dialog">
       <form method="dialog" class="dialog-card">
-        <button class="dialog-close" id="close-dialog" type="submit" aria-label="Close expanded post">Close</button>
+        <div class="dialog-actions">
+          <button class="danger-button is-hidden" id="dialog-delete" type="button">Delete post</button>
+          <button class="dialog-close" id="close-dialog" type="submit" aria-label="Close expanded post">Close</button>
+        </div>
         <p class="dialog-label" id="dialog-author"></p>
         <p class="dialog-message" id="dialog-message"></p>
         <p class="dialog-meta" id="dialog-meta"></p>
@@ -123,11 +148,14 @@
     </dialog>
 
     <template id="bubble-template">
-      <button class="bubble" type="button">
-        <span class="bubble-author"></span>
-        <span class="bubble-message"></span>
-        <span class="bubble-time"></span>
-      </button>
+      <article class="bubble-card">
+        <button class="bubble" type="button">
+          <span class="bubble-author"></span>
+          <span class="bubble-message"></span>
+          <span class="bubble-time"></span>
+        </button>
+        <button class="bubble-delete danger-button is-hidden" type="button">Delete</button>
+      </article>
     </template>
 
     <script type="module" src="./app.js"></script>
