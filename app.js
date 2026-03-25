@@ -1,6 +1,8 @@
 const MAX_POSTS = 60;
 const STUDENT_NAME_KEY = "u2day-livewall-student-name";
 
+const page = document.body.dataset.page || "dashboard";
+
 const state = {
   posts: [],
   stream: null,
@@ -24,6 +26,7 @@ const els = {
   postCount: document.querySelector("#post-count"),
   refreshButton: document.querySelector("#refresh-button"),
   moderationButton: document.querySelector("#moderation-button"),
+  moderationStateLabel: document.querySelector("#moderation-state-label"),
   bubbleGrid: document.querySelector("#bubble-grid"),
   emptyState: document.querySelector("#empty-state"),
   bubbleTemplate: document.querySelector("#bubble-template"),
@@ -45,15 +48,15 @@ async function initialise() {
 }
 
 function bindEvents() {
-  els.form.addEventListener("submit", handleSubmit);
-  els.refreshButton.addEventListener("click", loadPosts);
-  els.lockNameButton.addEventListener("click", handleLockName);
-  els.moderationButton.addEventListener("click", toggleModeration);
-  els.dialogDelete.addEventListener("click", handleDialogDelete);
+  els.form?.addEventListener("submit", handleSubmit);
+  els.refreshButton?.addEventListener("click", loadPosts);
+  els.lockNameButton?.addEventListener("click", handleLockName);
+  els.moderationButton?.addEventListener("click", toggleModeration);
+  els.dialogDelete?.addEventListener("click", handleDialogDelete);
 }
 
 function handleLockName() {
-  const candidate = sanitiseText(els.lockNameInput.value, 40);
+  const candidate = sanitiseText(els.lockNameInput?.value || "", 40);
   if (!candidate) {
     setLockFeedback("Enter the student name before locking it.", true);
     return;
@@ -76,8 +79,8 @@ async function handleSubmit(event) {
 
   const payload = {
     author: state.lockedName,
-    message: els.messageInput.value.trim(),
-    theme: els.themeInput.value,
+    message: (els.messageInput?.value || "").trim(),
+    theme: els.themeInput?.value || "sunrise",
   };
 
   if (!payload.message) {
@@ -101,9 +104,10 @@ async function handleSubmit(event) {
       throw new Error(body.error || "Unable to post right now.");
     }
 
-    els.messageInput.value = "";
+    if (els.messageInput) {
+      els.messageInput.value = "";
+    }
     setFeedback("Posted to the live wall.");
-    await loadPosts();
   } catch (error) {
     setFeedback(error.message || "Something went wrong while posting.", true);
   } finally {
@@ -164,7 +168,7 @@ function connectStream() {
     state.posts = state.posts.filter((item) => item.id !== deleted.id);
     if (state.selectedPostId === deleted.id) {
       state.selectedPostId = null;
-      if (els.dialog.open) {
+      if (els.dialog?.open) {
         els.dialog.close();
       }
     }
@@ -185,7 +189,7 @@ function updatePosts(raw) {
   state.posts = data.posts.slice(0, MAX_POSTS);
   if (state.selectedPostId && !state.posts.some((post) => post.id === state.selectedPostId)) {
     state.selectedPostId = null;
-    if (els.dialog.open) {
+    if (els.dialog?.open) {
       els.dialog.close();
     }
   }
@@ -194,23 +198,55 @@ function updatePosts(raw) {
 
 function renderLockedName() {
   const hasLockedName = Boolean(state.lockedName);
-  els.authorInput.value = state.lockedName || "";
-  els.authorInput.readOnly = true;
-  els.lockNameInput.value = state.lockedName || "";
-  els.lockNameInput.readOnly = hasLockedName;
-  els.lockNameButton.textContent = hasLockedName ? "Name locked" : "Lock name";
-  els.lockNameButton.disabled = hasLockedName;
-  els.lockHeading.textContent = hasLockedName ? "This device is locked to one student" : "Lock this device to a student name";
+
+  if (els.authorInput) {
+    els.authorInput.value = state.lockedName || "";
+    els.authorInput.readOnly = true;
+  }
+
+  if (els.lockNameInput) {
+    els.lockNameInput.value = state.lockedName || "";
+    els.lockNameInput.readOnly = hasLockedName;
+  }
+
+  if (els.lockNameButton) {
+    els.lockNameButton.textContent = hasLockedName ? "Name locked" : "Lock name";
+    els.lockNameButton.disabled = hasLockedName;
+  }
+
+  if (els.lockHeading) {
+    els.lockHeading.textContent = hasLockedName
+      ? "This device is locked to one student"
+      : "Lock this device to a student name";
+  }
 }
 
 function renderModerationState() {
-  els.moderationButton.textContent = state.moderationEnabled ? "Moderation on" : "Moderation off";
-  els.dialogDelete.classList.toggle("is-hidden", !state.moderationEnabled);
+  if (els.moderationButton) {
+    els.moderationButton.textContent = state.moderationEnabled ? "Moderation on" : "Moderation off";
+  }
+
+  if (els.moderationStateLabel) {
+    els.moderationStateLabel.textContent = state.moderationEnabled ? "On" : "Off";
+  }
+
+  if (els.dialogDelete) {
+    els.dialogDelete.classList.toggle("is-hidden", !state.moderationEnabled || page !== "dashboard");
+  }
 }
 
 function renderPosts() {
-  els.postCount.textContent = String(state.posts.length);
-  els.emptyState.classList.toggle("is-hidden", state.posts.length > 0);
+  if (els.postCount) {
+    els.postCount.textContent = String(state.posts.length);
+  }
+
+  if (els.emptyState) {
+    els.emptyState.classList.toggle("is-hidden", state.posts.length > 0);
+  }
+
+  if (!els.bubbleGrid || !els.bubbleTemplate) {
+    return;
+  }
 
   const nodes = state.posts.map((post) => renderBubbleCard(post));
   els.bubbleGrid.replaceChildren(...nodes);
@@ -221,27 +257,40 @@ function renderBubbleCard(post) {
   const bubble = node.querySelector(".bubble");
   const deleteButton = node.querySelector(".bubble-delete");
 
-  bubble.dataset.theme = post.theme;
-  bubble.querySelector(".bubble-author").textContent = post.author;
-  bubble.querySelector(".bubble-message").textContent = post.message;
-  bubble.querySelector(".bubble-time").textContent = formatTime(post.createdAt);
-  bubble.addEventListener("click", () => openDialog(post));
+  if (bubble) {
+    bubble.dataset.theme = post.theme;
+    bubble.querySelector(".bubble-author").textContent = post.author;
+    bubble.querySelector(".bubble-message").textContent = post.message;
+    bubble.querySelector(".bubble-time").textContent = formatTime(post.createdAt);
+    bubble.addEventListener("click", () => openDialog(post));
+  }
 
-  deleteButton.classList.toggle("is-hidden", !state.moderationEnabled);
-  deleteButton.addEventListener("click", (event) => {
-    event.stopPropagation();
-    deletePost(post.id);
-  });
+  if (deleteButton) {
+    deleteButton.classList.toggle("is-hidden", !state.moderationEnabled || page !== "dashboard");
+    deleteButton.addEventListener("click", (event) => {
+      event.stopPropagation();
+      deletePost(post.id);
+    });
+  }
 
   return node;
 }
 
 function openDialog(post) {
+  if (!els.dialog || !els.dialogAuthor || !els.dialogMessage || !els.dialogMeta) {
+    return;
+  }
+
   state.selectedPostId = post.id;
   els.dialogAuthor.textContent = post.author;
   els.dialogMessage.textContent = post.message;
   els.dialogMeta.textContent = `Posted ${formatDateTime(post.createdAt)} · Theme: ${capitalise(post.theme)}`;
-  els.dialogDelete.dataset.postId = post.id;
+
+  if (els.dialogDelete) {
+    els.dialogDelete.dataset.postId = post.id;
+    els.dialogDelete.classList.toggle("is-hidden", !state.moderationEnabled || page !== "dashboard");
+  }
+
   els.dialog.showModal();
 }
 
@@ -252,7 +301,7 @@ function toggleModeration() {
 }
 
 async function handleDialogDelete() {
-  const postId = els.dialogDelete.dataset.postId;
+  const postId = els.dialogDelete?.dataset.postId;
   if (!postId) {
     return;
   }
@@ -274,7 +323,7 @@ async function deletePost(postId) {
     state.posts = state.posts.filter((item) => item.id !== postId);
     if (state.selectedPostId === postId) {
       state.selectedPostId = null;
-      if (els.dialog.open) {
+      if (els.dialog?.open) {
         els.dialog.close();
       }
     }
@@ -285,23 +334,39 @@ async function deletePost(postId) {
 }
 
 function setSubmitting(isSubmitting) {
+  if (!els.submitButton) {
+    return;
+  }
+
   els.submitButton.disabled = isSubmitting;
   els.submitButton.textContent = isSubmitting ? "Posting..." : "Post to live wall";
 }
 
 function setFeedback(message, isError = false) {
+  if (!els.formFeedback) {
+    return;
+  }
+
   els.formFeedback.textContent = message;
   els.formFeedback.classList.toggle("status-offline", isError);
   els.formFeedback.classList.toggle("status-live", !isError);
 }
 
 function setLockFeedback(message, isError = false) {
+  if (!els.lockFeedback) {
+    return;
+  }
+
   els.lockFeedback.textContent = message;
   els.lockFeedback.classList.toggle("status-offline", isError);
   els.lockFeedback.classList.toggle("status-live", !isError);
 }
 
 function setConnectionStatus(isLive) {
+  if (!els.connectionStatus) {
+    return;
+  }
+
   els.connectionStatus.textContent = isLive ? "Live" : "Reconnecting";
   els.connectionStatus.classList.toggle("status-live", isLive);
   els.connectionStatus.classList.toggle("status-offline", !isLive);

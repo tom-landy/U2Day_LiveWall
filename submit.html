@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>U2 Day Submit a Post</title>
+    <meta name="description" content="Student submission page for the U2 Day Live Wall." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Manrope:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body data-page="submit">
+    <div class="submit-shell">
+      <header class="hero submit-hero">
+        <div class="hero-copy">
+          <p class="eyebrow">U2 Day</p>
+          <h1>Post to the Live Wall</h1>
+          <p class="hero-text">
+            Lock this device to your name once, then send your message to the shared wall.
+          </p>
+          <nav class="page-nav" aria-label="App pages">
+            <a class="nav-chip" href="./index.html">Dashboard</a>
+            <a class="nav-chip" href="./wall.html">Live wall</a>
+            <a class="nav-chip is-current" href="./submit.html">Student page</a>
+          </nav>
+        </div>
+
+        <div class="hero-meta">
+          <div class="meta-card">
+            <span class="meta-label">Connected</span>
+            <strong id="connection-status">Connecting...</strong>
+          </div>
+          <div class="meta-card">
+            <span class="meta-label">Posts Live</span>
+            <strong id="post-count">0</strong>
+          </div>
+          <div class="meta-card">
+            <span class="meta-label">What happens</span>
+            <strong>Your message appears on the wall right away</strong>
+          </div>
+        </div>
+      </header>
+
+      <main class="submit-layout">
+        <section class="panel submit-panel">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Step 1</p>
+              <h2>Lock your name</h2>
+            </div>
+          </div>
+
+          <section class="lock-card">
+            <div>
+              <p class="eyebrow">Student identity</p>
+              <h3 id="lock-heading">Lock this device to a student name</h3>
+            </div>
+            <div class="lock-row">
+              <input id="lock-name-input" maxlength="40" placeholder="Enter your name once" />
+              <button class="ghost-button" id="lock-name-button" type="button">Lock name</button>
+            </div>
+            <p class="form-note" id="lock-feedback">Each browser can be locked to one student name before posting.</p>
+          </section>
+        </section>
+
+        <section class="panel submit-panel">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Step 2</p>
+              <h2>Send your message</h2>
+            </div>
+          </div>
+
+          <form id="post-form" class="post-form">
+            <label>
+              Locked student name
+              <input
+                id="author-input"
+                name="author"
+                maxlength="40"
+                placeholder="Lock your name above first"
+                readonly
+                required
+              />
+            </label>
+
+            <label>
+              Your post
+              <textarea
+                id="message-input"
+                name="message"
+                maxlength="280"
+                rows="6"
+                placeholder="Share a question, idea, reflection, takeaway, or challenge..."
+                required
+              ></textarea>
+            </label>
+
+            <label>
+              Bubble colour
+              <select id="theme-input" name="theme">
+                <option value="sunrise">Sunrise</option>
+                <option value="lagoon">Lagoon</option>
+                <option value="meadow">Meadow</option>
+                <option value="berry">Berry</option>
+                <option value="gold">Gold</option>
+              </select>
+            </label>
+
+            <button class="primary-button" id="submit-button" type="submit">Post to live wall</button>
+            <p class="form-note" id="form-feedback">Posts appear instantly for everyone watching.</p>
+          </form>
+        </section>
+      </main>
+    </div>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

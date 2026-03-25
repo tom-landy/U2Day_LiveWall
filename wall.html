@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>U2 Day Live Wall</title>
+    <meta name="description" content="Clean live wall display for the projector screen." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Manrope:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body data-page="wall" class="wall-page">
+    <div class="wall-screen-shell">
+      <header class="wall-screen-header">
+        <div>
+          <p class="eyebrow">U2 Day</p>
+          <h1>Live Wall</h1>
+        </div>
+        <div class="wall-screen-meta">
+          <span id="connection-status">Connecting...</span>
+          <span><strong id="post-count">0</strong> posts</span>
+        </div>
+      </header>
+
+      <main class="wall-screen-stage">
+        <div class="bubble-grid bubble-grid-large" id="bubble-grid" aria-live="polite"></div>
+        <div class="empty-state" id="empty-state">
+          <h3>The wall is ready</h3>
+          <p>New messages will appear here automatically.</p>
+        </div>
+      </main>
+    </div>
+
+    <dialog class="message-dialog" id="message-dialog">
+      <form method="dialog" class="dialog-card">
+        <div class="dialog-actions">
+          <button class="dialog-close" id="close-dialog" type="submit" aria-label="Close expanded post">Close</button>
+        </div>
+        <p class="dialog-label" id="dialog-author"></p>
+        <p class="dialog-message" id="dialog-message"></p>
+        <p class="dialog-meta" id="dialog-meta"></p>
+      </form>
+    </dialog>
+
+    <template id="bubble-template">
+      <article class="bubble-card">
+        <button class="bubble" type="button">
+          <span class="bubble-author"></span>
+          <span class="bubble-message"></span>
+          <span class="bubble-time"></span>
+        </button>
+      </article>
+    </template>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

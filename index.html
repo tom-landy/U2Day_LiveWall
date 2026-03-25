@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>U2 Day Live Wall</title>
+    <title>U2 Day Live Wall Dashboard</title>
     <meta
       name="description"
-      content="A real-time live wall where students can post thoughts and see them appear instantly on screen."
+      content="Dashboard view for the U2 Day Live Wall with moderation controls and quick links."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -16,21 +16,21 @@
     />
     <link rel="stylesheet" href="./styles.css" />
   </head>
-  <body>
+  <body data-page="dashboard">
     <div class="app-shell">
       <header class="hero">
         <div class="hero-copy">
           <p class="eyebrow">U2 Day</p>
-          <h1>Live Wall</h1>
+          <h1>Live Wall Dashboard</h1>
           <p class="hero-text">
-            Students post reflections, questions, or ideas and they appear on the wall in real time. Tap any bubble
-            to expand it for the room.
+            This is your control screen. Use it to monitor the activity, turn moderation on, and jump to the wall view
+            or the student submission page.
           </p>
-          <div class="hero-badges">
-            <span class="badge">Real-time updates</span>
-            <span class="badge">Interactive bubble wall</span>
-            <span class="badge">Render-ready Node app</span>
-          </div>
+          <nav class="page-nav" aria-label="App pages">
+            <a class="nav-chip is-current" href="./index.html">Dashboard</a>
+            <a class="nav-chip" href="./wall.html">Live wall</a>
+            <a class="nav-chip" href="./submit.html">Student page</a>
+          </nav>
         </div>
 
         <div class="hero-meta">
@@ -39,93 +39,54 @@
             <strong id="connection-status">Connecting...</strong>
           </div>
           <div class="meta-card">
-            <span class="meta-label">Posts Today</span>
+            <span class="meta-label">Posts Live</span>
             <strong id="post-count">0</strong>
           </div>
           <div class="meta-card">
-            <span class="meta-label">Screen View</span>
-            <strong>Open this page on the projector</strong>
+            <span class="meta-label">Moderation</span>
+            <strong id="moderation-state-label">Off</strong>
           </div>
         </div>
       </header>
 
-      <main class="layout">
-        <section class="panel submit-panel">
+      <main class="dashboard-layout">
+        <section class="panel quick-panel">
           <div class="section-heading">
             <div>
-              <p class="eyebrow">Post to the wall</p>
-              <h2>Student submission</h2>
+              <p class="eyebrow">Quick actions</p>
+              <h2>Run the event</h2>
             </div>
           </div>
 
-          <section class="lock-card">
-            <div>
-              <p class="eyebrow">Student identity</p>
-              <h3 id="lock-heading">Lock this device to a student name</h3>
-            </div>
-            <div class="lock-row">
-              <input id="lock-name-input" maxlength="40" placeholder="Enter the student name once" />
-              <button class="ghost-button" id="lock-name-button" type="button">Lock name</button>
-            </div>
-            <p class="form-note" id="lock-feedback">Each browser can be locked to one student name before posting.</p>
-          </section>
+          <div class="action-grid">
+            <a class="action-card" href="./wall.html">
+              <p class="eyebrow">Projector</p>
+              <h3>Open wall view</h3>
+              <p>Use this clean display on the big screen.</p>
+            </a>
+            <a class="action-card" href="./submit.html">
+              <p class="eyebrow">Students</p>
+              <h3>Open submission page</h3>
+              <p>Share this page or QR code with students.</p>
+            </a>
+          </div>
 
-          <form id="post-form" class="post-form">
-            <label>
-              Locked student name
-              <input
-                id="author-input"
-                name="author"
-                maxlength="40"
-                placeholder="Lock a student name above first"
-                readonly
-                required
-              />
-            </label>
-
-            <label>
-              Your post
-              <textarea
-                id="message-input"
-                name="message"
-                maxlength="280"
-                rows="5"
-                placeholder="Share a question, idea, reflection, takeaway, or challenge..."
-                required
-              ></textarea>
-            </label>
-
-            <label>
-              Bubble colour
-              <select id="theme-input" name="theme">
-                <option value="sunrise">Sunrise</option>
-                <option value="lagoon">Lagoon</option>
-                <option value="meadow">Meadow</option>
-                <option value="berry">Berry</option>
-                <option value="gold">Gold</option>
-              </select>
-            </label>
-
-            <button class="primary-button" id="submit-button" type="submit">Post to live wall</button>
-            <p class="form-note" id="form-feedback">Posts appear instantly for everyone watching.</p>
-          </form>
+          <div class="wall-actions">
+            <button class="ghost-button" id="moderation-button" type="button">Moderation off</button>
+            <button class="ghost-button" id="refresh-button" type="button">Refresh</button>
+          </div>
         </section>
 
         <section class="panel wall-panel">
           <div class="section-heading">
             <div>
-              <p class="eyebrow">On screen now</p>
-              <h2>Interactive bubble wall</h2>
-            </div>
-            <div class="wall-actions">
-              <button class="ghost-button" id="moderation-button" type="button">Moderation off</button>
-              <button class="ghost-button" id="refresh-button" type="button">Refresh</button>
+              <p class="eyebrow">Live feed</p>
+              <h2>Newest bubbles</h2>
             </div>
           </div>
 
-          <div class="wall-stage">
+          <div class="wall-stage dashboard-wall-stage">
             <div class="bubble-grid" id="bubble-grid" aria-live="polite"></div>
-
             <div class="empty-state" id="empty-state">
               <h3>The wall is ready</h3>
               <p>The first student post will appear here as a bubble.</p>
